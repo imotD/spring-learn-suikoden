@@ -1,68 +1,49 @@
 package com.example.learnspringbootfromjeff.controller;
 
 import com.example.learnspringbootfromjeff.model.Hero;
+import com.example.learnspringbootfromjeff.service.HeroService;
+import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/hero")
+@Api(value = "Hero Controller")
 public class HeroSuikodenController {
 
-    public List<Hero> heroes = new ArrayList<>();
-    public Integer counter = 1;
+    @Autowired
+    HeroService heroService;
 
     @GetMapping(path = "/list-hero")
-    public List<Hero> daftarHero (){
-        return heroes;
+    @Operation(description = "Api untuk melihat list hero")
+    public List<Hero> listHero (){
+       return heroService.listHero();
     }
 
     @PostMapping(path = "/add")
+    @Operation(description = "Api untuk menambahkan hero")
     public Hero addNewHero(@RequestBody Hero request){
-        request.setId(counter);
-        heroes.add(request);
-        counter++;
-        return request;
+        return heroService.addNewHero(request);
     }
 
     @PutMapping(path = "/update/{id}")
+    @Operation(description = "Api untuk mengupdate hero")
     public Boolean updateChangeData (@RequestBody Hero request,@PathVariable Integer id){
-        final Optional<Hero> result = heroes.stream().filter(hero -> hero.getId() == id).findFirst();
-
-        if(result.isPresent()){
-            result.get().setName(request.getName());
-            result.get().setStar(request.getStar());
-
-            return true;
-        } else {
-            return false;
-        }
+        return heroService.updateChangeData(request, id);
     }
 
     @DeleteMapping(path = "/deleted/{id}")
+    @Operation(description = "Api untuk menghapus hero")
     public Boolean deleteData (@PathVariable Integer id){
-        final Optional<Hero> result = heroes.stream().filter(hero -> hero.getId() == id).findFirst();
-
-        if(result.isPresent()){
-            heroes.remove(result.get());
-            return true;
-        } else {
-            return false;
-        }
+        return heroService.deleteData(id);
     }
 
     @PatchMapping(path = "/change-status/{id}")
-    public  Boolean changeStatus (@PathVariable Integer id, @RequestParam Boolean isNewHero){
-        final Optional<Hero> result = heroes.stream().filter(hero -> hero.getId() == id).findFirst();
-
-        if(result.isPresent()){
-            result.get().setNewHero(isNewHero);
-            return true;
-        } else {
-            return false;
-        }
+    @Operation(description = "Api untuk update isNewHero ")
+    public Boolean changeStatus (@PathVariable Integer id, @RequestParam Boolean isNewHero){
+        return heroService.changeStatus(id,isNewHero);
     }
 }
-it
