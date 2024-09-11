@@ -1,38 +1,38 @@
 package com.example.learnspringbootfromjeff.service;
 
-import com.example.learnspringbootfromjeff.model.Hero;
+import com.example.learnspringbootfromjeff.model.entitiy.Hero;
+import com.example.learnspringbootfromjeff.repository.HeroRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class HeroServiceImpl implements HeroService{
 
-    public List<Hero> heroes = new ArrayList<>();
-    public Integer counter = 1;
+    @Autowired
+    HeroRepository heroRepository;
+
     @Override
     public List<Hero> listHero() {
-        return heroes;
+        return heroRepository.findAll();
     }
 
     @Override
     public Hero addNewHero(Hero request) {
-        request.setId(counter);
-        heroes.add(request);
-        counter++;
+        // save ke mongodb
+        heroRepository.save(request);
         return request;
     }
 
     @Override
-    public Boolean updateChangeData(Hero request, Integer id) {
-        final Optional<Hero> result = heroes.stream().filter(hero -> hero.getId() == id).findFirst();
-
-        if(result.isPresent()){
+    public Boolean updateChangeData(Hero request, String id) {
+        Optional<Hero> result = heroRepository.findById(id);
+        if (result.isPresent()) {
             result.get().setName(request.getName());
             result.get().setStar(request.getStar());
-
+            heroRepository.save(result.get());
             return true;
         } else {
             return false;
@@ -40,23 +40,20 @@ public class HeroServiceImpl implements HeroService{
     }
 
     @Override
-    public Boolean deleteData(Integer id) {
-        final Optional<Hero> result = heroes.stream().filter(hero -> hero.getId() == id).findFirst();
-
-        if(result.isPresent()){
-            heroes.remove(result.get());
-            return true;
-        } else {
-            return false;
-        }
+    public Boolean deleteData(String id) {
+       heroRepository.findById(id);
+       return true;
     }
 
     @Override
-    public Boolean changeStatus(Integer id, Boolean isNewHero) {
-        final Optional<Hero> result = heroes.stream().filter(hero -> hero.getId() == id).findFirst();
+    public Boolean changeStatus(String id, Boolean isNewHero) {
+
+        final Optional<Hero> result = heroRepository.findById(id);
 
         if(result.isPresent()){
-            result.get().setIsNewHero(isNewHero);
+            Hero hero = result.get();
+            hero.setIsNewHero(isNewHero);
+            heroRepository.save(hero);
             return true;
         } else {
             return false;

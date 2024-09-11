@@ -1,6 +1,6 @@
 package com.example.learnspringbootfromjeff.controller;
 
-import com.example.learnspringbootfromjeff.model.Hero;
+import com.example.learnspringbootfromjeff.model.entitiy.Hero;
 import com.example.learnspringbootfromjeff.service.HeroService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,19 +31,19 @@ public class HeroSuikodenController {
 
     @PutMapping(path = "/update/{id}")
     @Operation(description = "Api untuk mengupdate hero")
-    public Boolean updateChangeData (@RequestBody Hero request,@PathVariable Integer id){
+    public Boolean updateChangeData (@RequestBody Hero request, @PathVariable String id){
         return heroService.updateChangeData(request, id);
     }
 
     @DeleteMapping(path = "/deleted/{id}")
     @Operation(description = "Api untuk menghapus hero")
-    public Boolean deleteData (@PathVariable Integer id){
+    public Boolean deleteData (@PathVariable String id){
         return heroService.deleteData(id);
     }
 
     @PatchMapping(path = "/change-status/{id}")
     @Operation(description = "Api untuk update isNewHero ")
-    public Boolean changeStatus (@PathVariable Integer id, @RequestParam Boolean isNewHero){
+    public Boolean changeStatus (@PathVariable String id, @RequestParam Boolean isNewHero){
         return heroService.changeStatus(id,isNewHero);
     }
 }

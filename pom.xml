@@ -28,7 +28,7 @@
 			<version>1.18.32</version>
 		</dependency>
 
-<!--		Swagger-->
+		<!-- Swagger-->
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-boot-starter</artifactId>
@@ -38,9 +38,16 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-webflux-ui</artifactId>
-			<version>1.8.0</version>
+			<version>1.6.8</version>
 		</dependency>
-<!--		Swagger-->
+		<!-- Swagger-->
+
+		<!-- MongoDB-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+		</dependency>
+		<!-- MongoDB-->
 
 
 		<dependency>
