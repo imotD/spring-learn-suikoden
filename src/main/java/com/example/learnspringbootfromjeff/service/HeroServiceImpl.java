@@ -28,7 +28,7 @@ public class HeroServiceImpl implements HeroService{
 
     @Override
     public Boolean updateChangeData(Hero request, String id) {
-        Optional<Hero> result = heroRepository.findById(id);
+        final Optional<Hero> result = heroRepository.findById(id);
         if (result.isPresent()) {
             result.get().setName(request.getName());
             result.get().setStar(request.getStar());
@@ -41,7 +41,7 @@ public class HeroServiceImpl implements HeroService{
 
     @Override
     public Boolean deleteData(String id) {
-       heroRepository.findById(id);
+       heroRepository.deleteById(id);
        return true;
     }
 
